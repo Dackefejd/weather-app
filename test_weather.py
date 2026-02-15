@@ -1,12 +1,8 @@
-import unittest
-from weather import celsius_to_fahrenheit
+from weather import get_weather
 
-class TestWeather(unittest.TestCase):
-    def test_conversion(self):
-        # 0 C är 32 F
-        self.assertEqual(celsius_to_fahrenheit(0), 32)
-        # 100 C är 212 F
-        self.assertEqual(celsius_to_fahrenheit(100), 212)
+def test_api_status_code():
+    # API testing - Stockholm (lat 59.3, lon 18.0)
+    response = get_weather(59.3, 18.0)
 
-if __name__ == '__main__':
-    unittest.main()
+    # checking for status: 200
+    assert response.status_code == 200

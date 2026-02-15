@@ -10,11 +10,16 @@ pipeline {
                 failure { echo "========Checkout execution failed========" }
             }
         }
-
-        stage("Run Test") {
+        stage('Install Dependencies') {
+    steps {
+        echo "======== Installing libraries ========"
+        sh 'python3 -m pip install -r requirements.txt'
+    }
+}
+        stage("Run pytest") {
             steps {
                 
-                sh 'python3 test_weather.py'
+                sh 'PYTHONPATH=. pytest'
             }
             post {
                 success { echo "========Test executed successfully ========" }
