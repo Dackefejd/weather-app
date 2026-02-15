@@ -3,3 +3,6 @@ def celsius_to_fahrenheit(celsius):
 
 if __name__ == "__main__":
     print(f"20 grader Celsius är {celsius_to_fahrenheit(20)} grader Fahrenheit.")
+
+
+# Simple comment for testing jenkins pipeline
