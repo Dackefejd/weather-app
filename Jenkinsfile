@@ -3,28 +3,42 @@ pipeline {
     stages {
         stage("Checkout") {
             steps {
-                echo "========Getting code from Github========"
+                echo "======== Getting code from Github ========"
             }
             post {
-                success { echo "========Checkout executed successfully========" }
-                failure { echo "========Checkout execution failed========" }
+                success { echo "======== Checkout was successful ========" }
+                failure { echo "======== Checkout failed ========" }
             }
         }
+
         stage('Install Dependencies') {
-    steps {
-        echo "======== Installing libraries ========"
-        sh 'python3 -m pip install -r requirements.txt'
-    }
-}
+            steps {
+                echo "======== Creating venv and installing python libs ========"
+                sh '''
+                    # Create a virtual environment in the workspace 
+                        python3 -m venv venv
+                    
+                    # Update pip and install from your requirements.txt
+                    ./venv/bin/python3 -m pip install --upgrade pip
+                    ./venv/bin/pip install -r requirements.txt
+                '''
+            }
+        }
+
         stage("Run pytest") {
             steps {
-                
-                sh 'PYTHONPATH=. pytest'
+                echo "======== Run tests with pytest ========"
+                sh 'PYTHONPATH=. ./venv/bin/pytest'
             }
             post {
-                success { echo "========Test executed successfully ========" }
-                failure { echo "========Test execution failed========" }
+                success { echo "======== The tests passed! ========" }
+                failure { echo "======== The tests failed ========" }
             }
         }
-    } 
-} 
+    }
+    post {
+        always {
+            echo "======== The pipeline is completed ========"
+        }
+    }
+}
